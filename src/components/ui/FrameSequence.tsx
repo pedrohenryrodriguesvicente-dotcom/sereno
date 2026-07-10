@@ -47,6 +47,17 @@ interface CoverGeometry {
 const PRELOAD_AHEAD = 16;
 const PRELOAD_BEHIND = 4;
 
+// Breakpoint móvil (coincide con `md` de Tailwind).
+const MOBILE_MAX_W = 768;
+// Punto focal horizontal del encuadre en móvil: la turbina está a ~56% del
+// ancho del frame; al recortar los laterales (cover en pantalla vertical) se
+// ancla ahí para que quede centrada. En desktop se usa 0.5 (centro exacto,
+// comportamiento idéntico al anterior).
+const FOCAL_X_MOBILE = 0.56;
+
+const isMobileViewport = () =>
+  typeof window !== 'undefined' && window.innerWidth < MOBILE_MAX_W;
+
 export default function FrameSequence({
   framesPath,
   framePrefix = 'frame_',
@@ -80,7 +91,10 @@ export default function FrameSequence({
     const canvas = canvasRef.current;
     if (!canvas) return;
     const rect = canvas.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const mobile = isMobileViewport();
+    // En móvil se dibuja a menor resolución (DPR efectivo 1.5): 2-4x menos
+    // píxeles por frame, misma nitidez percibida en pantallas pequeñas.
+    const dpr = Math.min(window.devicePixelRatio || 1, mobile ? 1.5 : 2);
     const cw = Math.round(rect.width * dpr);
     const ch = Math.round(rect.height * dpr);
     canvas.width = cw;
@@ -97,7 +111,11 @@ export default function FrameSequence({
     if (imgRatio > canvasRatio) {
       dh = ch;
       dw = ch * imgRatio;
-      ox = (cw - dw) / 2;
+      // Cover con punto focal: en desktop focal 0.5 == centrado exacto
+      // (misma fórmula de siempre); en móvil ancla la turbina al centro,
+      // con clamp para no dejar huecos en los bordes.
+      const focalX = mobile ? FOCAL_X_MOBILE : 0.5;
+      ox = Math.min(0, Math.max(cw - dw, cw / 2 - dw * focalX));
     } else {
       dw = cw;
       dh = cw / imgRatio;
@@ -184,15 +202,35 @@ export default function FrameSequence({
       });
     }
 
-    const loadRest = () => {
-      for (let i = BATCH1_END; i < totalFrames; i++) loadImage(i);
+    const idle = (fn: () => void) => {
+      if ('requestIdleCallback' in window) {
+        (window as Window & typeof globalThis).requestIdleCallback(fn);
+      } else {
+        setTimeout(fn, 200);
+      }
     };
 
-    if ('requestIdleCallback' in window) {
-      (window as Window & typeof globalThis).requestIdleCallback(loadRest);
-    } else {
-      setTimeout(loadRest, 200);
-    }
+    const loadRest = () => {
+      // Desktop: todo de una vez (comportamiento de siempre).
+      if (!isMobileViewport()) {
+        for (let i = BATCH1_END; i < totalFrames; i++) loadImage(i);
+        return;
+      }
+      // Móvil: en tandas de 12 en tiempo ocioso, para no saturar red/CPU
+      // y que las imágenes de las secciones inferiores no lleguen "de
+      // golpe". La precarga direccional (ensureWindow) sigue priorizando
+      // los frames cercanos a la posición de scroll.
+      let next = BATCH1_END;
+      const CHUNK = 12;
+      const loadChunk = () => {
+        const end = Math.min(next + CHUNK, totalFrames);
+        for (; next < end; next++) loadImage(next);
+        if (next < totalFrames) idle(loadChunk);
+      };
+      loadChunk();
+    };
+
+    idle(loadRest);
 
     return () => {
       imagesRef.current.forEach((img) => (img.onload = null));
