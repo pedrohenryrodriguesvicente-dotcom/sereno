@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+/* ---- Design tokens (editorial claro, estilo referencia) ---- */
+@theme {
+  --color-paper: #ebe8e2; /* fondo crudo cálido */
+  --color-surface: #fbfaf7; /* tarjetas claras */
+  --color-ink: #1a1a18; /* texto principal */
+  --color-muted: #6e6d67; /* texto secundario */
+  --color-line: #d9d5cd; /* bordes suaves */
+  --color-dark: #1b1b19; /* tarjetas / pie oscuros */
+  --color-darksoft: #262521;
+  --color-amber: #d68a45; /* acento cálido (atardecer) */
+  --color-sage: #7e8e6e; /* verde energia limpa */
+
+  --font-display: var(--font-fraunces), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: var(--color-paper);
+}
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Grano sutil sobre la página (muy leve para no ensuciar el look claro) */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.02;
+  z-index: 9999;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+}
+
+/* Rebote de la pista de scroll */
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.45; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+.scroll-bounce { animation: scrollBounce 1.8s ease-in-out infinite; }
+
+@keyframes slowspin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+/* Giro de aspas en SVG: origen exacto en el centro del viewBox (rotor),
+   sin bamboleo, independiente del bounding box del trazo */
+.turbine-spin {
+  transform-box: view-box;
+  transform-origin: 50% 50%;
+  animation: slowspin 9s linear infinite;
+}
+
+/* Panel de cristal esmerilado (estilo iOS) para overlays sobre el vídeo.
+   Blur moderado + saturate para un cristal limpio (no lechoso), degradado
+   translúcido suave, borde apenas insinuado y brillo interior superior. */
+.glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.14) 0%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+  -webkit-backdrop-filter: blur(10px) saturate(150%);
+  backdrop-filter: blur(10px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.10),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* Elevación premium de tarjetas (solo dispositivos con cursor) */
+@media (hover: hover) and (pointer: fine) {
+  .card-hover {
+    transition: transform 250ms ease, box-shadow 250ms ease;
+  }
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 34px rgba(26, 26, 24, 0.14);
+  }
+}
+
+/* Accesibilidad: sin animaciones si el usuario lo prefiere */
+@media (prefers-reduced-motion: reduce) {
+  .card-hover, .card-hover:hover { transition: none; transform: none; }
+  .scroll-bounce, .turbine-spin { animation: none; }
+  html { scroll-behavior: auto; }
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--color-paper); }
+::-webkit-scrollbar-thumb {
+  background: var(--color-line);
+  border-radius: 6px;
+  border: 3px solid var(--color-paper);
+}
+::-webkit-scrollbar-thumb:hover { background: #c4bfb5; }
+
+::selection { background: var(--color-ink); color: var(--color-paper); }

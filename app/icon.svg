@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Círculo crema del sitio + turbina eólica negra (misma geometría que
+       los iconos de NavBar/HeroOverlays, con trazos gruesos para 16px) -->
+  <circle cx="32" cy="32" r="32" fill="#ebe8e2"/>
+  <g stroke="#1a1a18" stroke-width="6" stroke-linecap="round" fill="none">
+    <path d="M32 30 L32 52"/>
+    <path d="M32 30 L32 12"/>
+    <path d="M32 30 L47.6 39"/>
+    <path d="M32 30 L16.4 39"/>
+  </g>
+  <circle cx="32" cy="30" r="4.5" fill="#1a1a18"/>
+</svg>
