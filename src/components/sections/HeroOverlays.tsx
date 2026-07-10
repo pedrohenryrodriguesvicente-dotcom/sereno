@@ -97,7 +97,7 @@ export default function HeroOverlays() {
       {/* Insignia inferior izquierda (estilo referencia), con panel de
           cristal. En móvil va más alta para que la barra del navegador no
           la tape y no choque con la flecha centrada. */}
-      <div className="glass absolute bottom-14 left-5 flex items-center gap-2.5 rounded-full py-2 pl-2.5 pr-4 sm:bottom-8 sm:left-14 lg:left-20">
+      <div className="glass absolute bottom-20 left-5 flex items-center gap-2.5 rounded-full py-2 pl-2.5 pr-4 sm:bottom-8 sm:left-14 lg:left-20">
         <span className="grid h-7 w-7 place-items-center rounded-full bg-white/15">
           <svg viewBox="0 0 24 24" fill="none" className="h-4 w-4 text-white">
             <path d="M12 13v8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
@@ -120,7 +120,7 @@ export default function HeroOverlays() {
       {/* Pista de scroll — centrada en la parte inferior. En móvil sube
           para quedar cómodamente dentro del viewport visible. */}
       <div
-        className="absolute bottom-28 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2.5 sm:bottom-9"
+        className="absolute bottom-32 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2.5 sm:bottom-9"
         style={{ opacity: hintOpacity }}
       >
         <span className="font-sans text-sm uppercase tracking-[0.3em] text-white/85">

@@ -28,7 +28,13 @@ interface FrameSequenceProps {
   zeroPad?: number;
   ext?: string;
   totalFrames: number;
-  height?: string;
+  /**
+   * Clases Tailwind de altura del contenedor de scroll (permite altura
+   * responsive por breakpoint, p. ej. "h-[300vh] md:h-[500vh]"). El
+   * progreso del scrubbing se mide sobre la altura real, así que el mapeo
+   * 0→100% funciona igual con cualquier altura.
+   */
+  heightClassName?: string;
   children?: React.ReactNode;
   id?: string;
 }
@@ -64,7 +70,7 @@ export default function FrameSequence({
   zeroPad = 4,
   ext = 'webp',
   totalFrames,
-  height = '600vh',
+  heightClassName = 'h-[500vh]',
   children,
   id,
 }: FrameSequenceProps) {
@@ -260,7 +266,7 @@ export default function FrameSequence({
   }, []);
 
   return (
-    <section ref={containerRef} id={id} style={{ height }} className="relative w-full">
+    <section ref={containerRef} id={id} className={`relative w-full ${heightClassName}`}>
       <div className="sticky top-0 h-screen w-full overflow-hidden bg-black">
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
         <FrameContext.Provider value={{ frame, totalFrames, progress }}>
