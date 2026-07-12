@@ -40,7 +40,7 @@ export default function Specs() {
       {/* Columna izquierda */}
       <div>
         <span className="inline-block rounded-full border border-line bg-surface px-4 py-1.5 text-xs text-muted">
-          Más sobre
+          Más detalles
         </span>
         <TextReveal
           as="h2"

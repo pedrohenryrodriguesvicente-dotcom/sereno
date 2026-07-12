@@ -86,7 +86,7 @@ export default function Cards() {
               <p className="mt-1 text-sm text-muted">Energía consumida</p>
             </div>
             <span className="flex items-center gap-1 rounded-full border border-line px-2.5 py-1 text-[11px] text-muted">
-              <span className="text-amber">⚡</span> Últimas 3h
+              <span className="text-amber">⚡</span> Últimas 4 h
             </span>
           </div>
           <DotChart />

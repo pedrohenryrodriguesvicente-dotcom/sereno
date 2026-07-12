@@ -90,6 +90,24 @@ body {
   }
 }
 
+/* Vidrio SOLO en móvil (pista "Desliza"): mismas propiedades que .glass,
+   activas únicamente bajo 768px; en desktop la clase es inerte. */
+@media (max-width: 767.98px) {
+  .glass-mobile {
+    background: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.14) 0%,
+      rgba(255, 255, 255, 0.06) 100%
+    );
+    -webkit-backdrop-filter: blur(10px) saturate(150%);
+    backdrop-filter: blur(10px) saturate(150%);
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    box-shadow:
+      0 8px 32px rgba(0, 0, 0, 0.10),
+      inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  }
+}
+
 /* Accesibilidad: sin animaciones si el usuario lo prefiere */
 @media (prefers-reduced-motion: reduce) {
   .card-hover, .card-hover:hover { transition: none; transform: none; }

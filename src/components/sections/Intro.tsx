@@ -32,7 +32,7 @@ export default function Intro() {
         as="p"
         mode="words"
         step={26}
-        text="Genera tu propia energía limpia a partir del viento, de forma gratuita y renovable. Almacena lo que produces y utilízala en cualquier momento que la necesites."
+        text="Genera tu propia energía limpia y renovable a partir del viento, de forma gratuita. Almacena lo que produces y utilízala cuando la necesites."
         className="font-display text-2xl font-light leading-snug text-ink sm:text-[2rem] md:text-[2.4rem]"
       />
     </section>
