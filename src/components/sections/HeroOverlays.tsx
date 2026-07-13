@@ -117,19 +117,33 @@ export default function HeroOverlays() {
         </span>
       </div>
 
-      {/* Pista de scroll — centrada en la parte inferior. En móvil sube
-          para quedar cómodamente dentro del viewport visible y lleva
-          panel de vidrio (glass-mobile, inerte en desktop). */}
+      {/* Pista de scroll — centrada en la parte inferior. En móvil, solo el
+          texto "Desliza" lleva una píldora compacta de vidrio (glass-mobile,
+          inerte en desktop); la flecha queda suelta, sin panel. */}
       <div
-        className="glass-mobile absolute bottom-44 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2.5 rounded-2xl px-5 py-3 sm:bottom-9 md:rounded-none md:px-0 md:py-0"
+        className="absolute bottom-44 left-1/2 flex -translate-x-1/2 flex-col items-center gap-2.5 sm:bottom-9"
         style={{ opacity: hintOpacity }}
       >
-        <span className="font-sans text-sm uppercase tracking-[0.3em] text-white/85">
+        <span className="glass-mobile rounded-full px-4 py-1.5 font-sans text-sm uppercase tracking-[0.3em] text-white/85 md:rounded-none md:px-0 md:py-0">
           Desliza
         </span>
         <svg viewBox="0 0 24 24" fill="none" className="scroll-bounce h-12 w-12 text-white/90">
           <path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
+      </div>
+
+      {/* Barra de progreso del scrubbing — línea fina al borde inferior.
+          Ligada al mismo progress del contexto (solo transform/opacity,
+          sin listeners nuevos); se desvanece al final igual que el hint. */}
+      <div
+        className="pointer-events-none absolute bottom-0 left-0 right-0 h-0.5 bg-white/15"
+        style={{ opacity: hintOpacity }}
+        aria-hidden
+      >
+        <div
+          className="h-full w-full bg-white/75"
+          style={{ transform: `scaleX(${progress})`, transformOrigin: 'left' }}
+        />
       </div>
     </>
   );

@@ -16,12 +16,13 @@ export default function Home() {
       <NavBar />
 
       {/* Hero: en móvil el scrubbing completo se recorre en 250vh (menos
-          scroll de dedo); en desktop se mantienen los 500vh exactos. */}
+          scroll de dedo); en desktop en 400vh, cinematográfico sin
+          hacerse largo. */}
       <FrameSequence
         id="inicio"
         framesPath="/frames/loop"
         totalFrames={TOTAL_FRAMES}
-        heightClassName="h-[250vh] md:h-[500vh]"
+        heightClassName="h-[250vh] md:h-[400vh]"
       >
         <HeroOverlays />
       </FrameSequence>
